@@ -52,6 +52,9 @@ def log_notice(text: str) -> None:
 def complete_step(text: str, text2: Optional[str] = None) -> Iterator[list[Any]]:
     global LEVEL
 
+    if LEVEL == 1 and (preamble := os.environ.get("MKOSI_STEP_PREAMBLE", "::group::{step}")):
+        logging.info(preamble.format(step=text), extra={"raw": True})
+
     log_step(text)
 
     LEVEL += 1
@@ -61,6 +64,9 @@ def complete_step(text: str, text2: Optional[str] = None) -> Iterator[list[Any]]
     finally:
         LEVEL -= 1
         assert LEVEL >= 0
+
+    if LEVEL == 1 and (postamble := os.environ.get("MKOSI_STEP_POSTAMBLE", "::endgroup::")):
+        logging.info(postamble.format(step=text), extra={"raw": True})
 
     if text2 is not None:
         log_step(text2.format(*args))
@@ -81,6 +87,8 @@ class Formatter(logging.Formatter):
         super().__init__(fmt, *args, **kwargs)
 
     def format(self, record: logging.LogRecord) -> str:
+        if getattr(record, "raw", False):
+            return super().format(record)
         return self.formatters[record.levelno].format(record)
 
 
