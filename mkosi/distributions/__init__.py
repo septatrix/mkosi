@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 
 
 class PackageType(StrEnum):
-    none   = enum.auto()
-    rpm    = enum.auto()
-    deb    = enum.auto()
-    pkg    = enum.auto()
-    apk    = enum.auto()
+    none = enum.auto()
+    rpm = enum.auto()
+    deb = enum.auto()
+    pkg = enum.auto()
+    apk = enum.auto()
 
 
 class DistributionInstaller:
