@@ -8,7 +8,6 @@ from mkosi.distributions import Distribution, DistributionInstaller, PackageType
 from mkosi.installer import PackageManager
 from mkosi.installer.apk import Apk
 from mkosi.log import die
-from mkosi.util import sort_packages
 
 
 class Installer(DistributionInstaller):
@@ -63,7 +62,7 @@ class Installer(DistributionInstaller):
         Apk.invoke(
             context,
             "add",
-            [*sort_packages(packages)],
+            packages,
             apivfs=apivfs,
         )
 

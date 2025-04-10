@@ -5,8 +5,8 @@ from pathlib import Path
 from mkosi.config import Config
 from mkosi.context import Context
 from mkosi.installer import PackageManager
-from mkosi.run import run
-from mkosi.types import _FILE, CompletedProcess, PathString
+from mkosi.run import run, CompletedProcess
+from mkosi.util import _FILE, PathString
 
 
 class Apk(PackageManager):
