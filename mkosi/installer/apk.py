@@ -90,6 +90,20 @@ class Apk(PackageManager):
         )
 
     @classmethod
+    def install(
+        cls,
+        context: Context,
+        packages: Sequence[str],
+        *,
+        apivfs: bool = True,
+    ) -> None:
+        cls.invoke(context, "add", packages, apivfs=apivfs)
+
+    @classmethod
+    def remove(cls, context: Context, packages: Sequence[str]) -> None:
+        cls.invoke(context, "del", packages, apivfs=True)
+
+    @classmethod
     def sync(cls, context: Context, force: bool) -> None:
         # TODO implement force
         if (context.root / "etc/apk/world").exists():

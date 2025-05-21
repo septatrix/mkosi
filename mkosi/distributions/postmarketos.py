@@ -44,18 +44,7 @@ class Installer(DistributionInstaller):
         for dir in ["lib", "bin", "sbin"]:
             (context.root / "usr" / dir).mkdir(parents=True, exist_ok=True)
             (context.root / dir).symlink_to(f"usr/{dir}")
-
-        cls.install_packages(
-            context,
-            [
-                "--initdb",
-                "alpine-base",
-                "postmarketos-base",
-                # "device-qemu-amd64",
-                # "device-qemu-amd64-kernel-edge",
-            ],
-            apivfs=False,
-        )
+        Apk.install(context, ["--initdb", "postmarketos-base"], apivfs=False)
 
     @classmethod
     def install_packages(cls, context: Context, packages: Sequence[str], apivfs: bool = True) -> None:
