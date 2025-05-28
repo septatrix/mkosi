@@ -1994,6 +1994,10 @@ def install_type1(
         with umask(~0o700):
             dtb.parent.mkdir(parents=True, exist_ok=True)
 
+    microcode = finalize_microcode(context)
+    proper_initrds = finalize_initrds(context)
+    kmods = build_kernel_modules_initrd(context, kver)
+
     with umask(~0o600):
         if (
             want_efi(context.config)
@@ -2007,9 +2011,8 @@ def install_type1(
 
         initrds = [
             Path(shutil.copy2(initrd, dst.parent / initrd.name))
-            for initrd in finalize_microcode(context) + finalize_initrds(context)
-        ]
-        initrds += [Path(shutil.copy2(kmods, dst / "kernel-modules.initrd"))]
+            for initrd in microcode + proper_initrds
+        ] + [Path(shutil.copy2(kmods, dst / "kernel-modules.initrd"))]
 
         if dtb:
             shutil.copy2(find_devicetree(context, kver), dtb)
